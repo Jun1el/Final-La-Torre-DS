@@ -32,6 +32,17 @@ Codigo : 20212100C
 
 - Actualmente el init.sql esta vacio porque no tengo claro los requerimientos de las tablas 
 
+## Para levantar el docker-compose usamos 
+
+```bash 
+# en la raiz del proyecto usamos
+docker-compose up --build
+# Para mostrar el contenedor 
+docker ps
+```
+
 ![Texto alternativo](Image/image.png)
 
 ![Texto alternativo](Image/image2.png)
+
+"Declaro que esta entrega fue realizada de forma individual sin asistencia externa de generacion automatica y cumpliendo con las reglas del examen."
