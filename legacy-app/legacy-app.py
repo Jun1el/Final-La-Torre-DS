@@ -1,0 +1,1 @@
+print("la app legacy corre")
