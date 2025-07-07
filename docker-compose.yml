@@ -1,0 +1,51 @@
+version: '3.8'
+services: 
+  # creamos los 3 servicios legacy-app, new-microservice y database 
+  legacy-app:
+    build: ./legacy-app
+    environment:
+      - postgres_host=database
+  # dependencia de la condicion de healthckeck de la base de datos
+    depends_on:
+      database: 
+        condition: service_healthy
+  # comunicacion interna como poden en los requerimientos 
+    networks:
+      - internal
+
+  new-microservice:
+    build: ./new-microservice
+    depends_on:
+      - legacy-app
+    networks:
+      - internal
+  # definimos el servicio de la base de datos postgres  
+  database:
+    # imagen predefinida de postgres
+    image: postgres:latest
+    ports: 
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./initdb/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+  # health check referenciado del archivo de clase Proyecto_etl_docker_airflow
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - internal
+
+volumes:
+  postgres_data:
+
+networks:
+  internal:
+    driver: bridge
+
+
