@@ -45,4 +45,22 @@ docker ps
 
 ![Texto alternativo](Image/image2.png)
 
+### Parte 2 : Despliegue robusto y seguro en kubernetes
+
+- Primero se uso flask en los dos servicios para exponer puertos y poder establecer una comunicacion entre ellos asi mismo se mdofico el docker compose para cubrir este cambio.
+
+- Agregamos manifiestos secret.yaml y configmap.yaml donde definimos las credenciales de la bd encodeadas en base 64 y en configmap para inyectar data al nuevo microservicio
+
+- Agregamos el manifiesto  StatefulSet  para desplegar nuestra bd postgres con los requerimeintos pedidos de cada pod con su almacenamiento persitente
+  
+## Para probar esto usamos 
+
+```bash 
+kubectl apply -f secret.yaml
+kubectl apply -f configmap.yaml
+kubectl apply -f statefulset.yaml
+#verificamos con 
+kubectl get statefulset
+# y debemos ver postgres   1/1     15m
+```
 "Declaro que esta entrega fue realizada de forma individual sin asistencia externa de generacion automatica y cumpliendo con las reglas del examen."
