@@ -4,7 +4,7 @@ services:
   legacy-app:
     build: ./legacy-app
     environment:
-      - postgres_host=database
+      - POSTGRES_HOST=database
   # dependencia de la condicion de healthckeck de la base de datos
     depends_on:
       database: 
@@ -12,6 +12,8 @@ services:
   # comunicacion interna como poden en los requerimientos 
     networks:
       - internal
+    ports:
+      - "8000:8000"
 
   new-microservice:
     build: ./new-microservice
@@ -19,6 +21,8 @@ services:
       - legacy-app
     networks:
       - internal
+    ports:
+      - "8001:8000"
   # definimos el servicio de la base de datos postgres  
   database:
     # imagen predefinida de postgres
@@ -28,6 +32,7 @@ services:
     environment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: appdb
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./initdb/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
